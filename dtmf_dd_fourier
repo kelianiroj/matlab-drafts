@@ -1,0 +1,118 @@
+% author: keliani.
+% testing: dtmf tones, delta dirac function, e^-at and fourier series.
+
+-------------------------------------------
+
+% crear y reproducir la señal de cada tono
+
+T1=0.01; % Tiempo
+Fs = 48000; % Frecuencia de Sampling
+t = 0:1/Fs:T1; % Samples
+A = 1; % Amplitud
+
+% frecuencias para los últimos 4 dígitos del ID (5693).
+
+freq_123 = 697;
+freq_456 = 770;
+freq_789 = 852;
+freq_columna_2 = 1336;
+freq_columna_3 = 1477;
+
+% funciones que determinan la señal.
+
+senal_5 = A*sin(2*pi*freq_456*t) + A*sin(2*pi*freq_columna_2*t);
+senal_6 = A*sin(2*pi*freq_456*t) + A*sin(2*pi*freq_columna_3*t);
+senal_9 = A*sin(2*pi*freq_789*t) + A*sin(2*pi*freq_columna_3*t);
+senal_3 = A*sin(2*pi*freq_123*t) + A*sin(2*pi*freq_columna_3*t);
+
+% escuchar cada tono.
+
+sound(senal_5,Fs);
+sound(senal_6,Fs);
+sound(senal_9,Fs);
+sound(senal_3,Fs);
+
+% gráficas de cada señal y la suma de las señales
+
+sum_senales = senal_5+senal_6+senal_9+senal_3;
+
+subplot(3,2,1); plot(t, senal_5, 'r'); title ('Señal Tono #5'); xlabel ('Tiempo'); ylabel ('Amplitud')
+subplot(3,2,2); plot(t, senal_6, 'm'); title ('Señal Tono #6'); xlabel ('Tiempo'); ylabel ('Amplitud')
+subplot(3,2,3); plot(t, senal_9, 'k'); title ('Señal Tono #9'); xlabel ('Tiempo'); ylabel ('Amplitud')
+subplot(3,2,4); plot(t, senal_3, 'g'); title ('Señal Tono #3'); xlabel ('Tiempo'); ylabel ('Amplitud')
+subplot(3,2,5); plot(t, sum_senales); title ('Suma de los Tonos 5 6 9 3'); xlabel ('Tiempo'); ylabel ('Amplitud')
+
+% Delta Dirac y e^-at
+
+Fs = 48000;
+t = 0:1/Fs:1;
+
+a1 = 10000;
+a2 = a1*10;
+a3 = a2*10;
+a4 = 10000000;
+a5 = 100000000;
+a6 = 1000000000000;
+x_1 = exp(-a1*t);
+x_2 = exp(-a2*t);
+x_3 = exp(-a3*t);
+x_4 = exp(-a4*t);
+x_5 = exp(-a5*t);
+x_6 = exp(-a6*t);
+
+semilogx(t, x_1); title ('Comprobación: e(-at) se aproxima a infinito.'); xlabel('Tiempo'); ylabel('Amplitud')
+hold on
+semilogx(t, x_2)
+hold on
+semilogx(t, x_3)
+hold on
+semilogx(t, x_4)
+hold on
+semilogx(t, x_5)
+hold on
+semilogx(t, x_6)
+
+% serie de Fourier
+
+t = 0:0.002:2;
+aO = 0.5;
+wO = pi;
+
+% Para N = , donde el tren de pulsos es más visible
+N = 125;
+xN = aO*ones(1, length(t));
+for k= 1:1:N,
+xN = xN + 2/k/pi*sin(k*pi/2)*cos(k*wO*t);
+end
+
+plot(t,xN,'k'); title('Tren de Pulsos para N = 4, N = 16, N = 80 y N = 125'); xlabel('Tiempo'); ylabel('Amplitud');
+hold on
+
+% Para N = 4
+N1 = 4;
+xN = aO*ones(1, length(t));
+for k= 1:1:N1,
+xN = xN + 2/k/pi*sin(k*pi/2)*cos(k*wO*t);
+end
+
+plot(t,xN, 'c')
+hold on
+
+% Para N = 16
+N2 = 16;
+xN = aO*ones(1, length(t));
+for k= 1:1:N2,
+xN = xN + 2/k/pi*sin(k*pi/2)*cos(k*wO*t);
+end
+
+plot(t,xN, 'g')
+hold on
+
+% Para N = 80
+N3 = 80;
+xN = aO*ones(1, length(t));
+for k= 1:1:N3,
+xN = xN + 2/k/pi*sin(k*pi/2)*cos(k*wO*t);
+end
+plot(t,xN, 'r')
+hleg = legend('N = 125', 'N = 4','N = 16','N = 80');
