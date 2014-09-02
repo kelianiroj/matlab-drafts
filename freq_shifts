@@ -1,0 +1,42 @@
+% author: keliani.
+% testing: frequency shifts with square pulses.
+
+% generar pulso cuadrado
+
+fs = 64; % Secuencia de valores.
+Fs = 70;
+T = 1;
+t = 0:1/fs:0.984375; % Rango{0,1} en 64 valores.
+
+x = zeros(1,64);
+
+y_1 = [1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+y_2 = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+y_3 = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+
+% FFT
+
+func_fft = -1.^t;
+pulso_a = fft((func_fft.*(x+y_1)));
+pulso_b = fft((func_fft.*(x+y_2)));
+pulso_c = fft((func_fft.*(x+y_3)));
+
+% plots (frecuencia)
+
+f_1 = linspace(0,Fs, length(pulso_a));
+f_2 = linspace(0,Fs, length(pulso_b));
+f_3 = linspace(0,Fs, length(pulso_c));
+
+subplot(3,2,1); plot(f_1, abs(fftshift(pulso_a)), 'k'); title('Para 8 primeros valores = 1'); xlabel('Frecuencia (Hz)'); ylabel('Magnitud');
+subplot(3,2,2); plot(f_2, abs(fftshift(pulso_b)), 'r'); title('Para 16 primeros valores = 1'); xlabel('Frecuencia (Hz)'); ylabel('Magnitud');
+subplot(3,2,3); plot(f_3, abs(fftshift(pulso_c)), 'm'); title('Para 32 primeros valores = 1'); xlabel('Frecuencia (Hz)'); ylabel('Magnitud');
+
+% plots (fase)
+
+fase_a = unwrap(angle(pulso_a));
+fase_b = unwrap(angle(pulso_b));
+fase_c = unwrap(angle(pulso_c));
+
+subplot(3,2,1); plot(f_1, fase_a, 'k'); title('Fase: Para 8 primeros valores = 1');
+subplot(3,2,2); plot(f_2, fase_b, 'r'); title('Fase: Para 16 primeros valores = 1');
+subplot(3,2,3); plot(f_3, fase_c, 'm'); title('Fase: Para 32 primeros valores = 1');
