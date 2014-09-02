@@ -1,0 +1,28 @@
+% keliani e. rojas alcántara.
+% testing: erf/q functions and random values.
+
+-------------------------------------------
+
+% generar valores aleatorios
+
+secuencia_gauss = randn(1,1000000);
+
+% cálculos
+
+multiplicacion_sec = secuencia_gauss*100;
+suma_sec = multiplicacion_sec+7;
+media_sec = mean(suma_sec)
+desviacion_sec = std(suma_sec)
+varianza_sec = cov(suma_sec)
+min_sec = min(suma_sec)
+max_sec = max(suma_sec)
+hist(suma_sec,50); title('Secuencia de Valores Aleatorios')
+
+% función erf y función Q
+
+x1 = 5;
+x2 = 10;
+
+func_q_sec = qfunc((x1-media_sec)/desviacion_sec) - qfunc((x2-media_sec)/desviacion_sec)
+
+erf_sec = 0.5*erf((x2-media_sec)/(desviacion_sec*sqrt(2))) -0.5*((x1-media_sec)/(desviacion_sec*sqrt(2)))
