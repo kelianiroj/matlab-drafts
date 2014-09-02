@@ -1,6 +1,8 @@
 % author: keliani.
 % testing: frequency shifts with square pulses.
 
+-------------------------------------------
+
 % generar pulso cuadrado
 
 fs = 64; % Secuencia de valores.
